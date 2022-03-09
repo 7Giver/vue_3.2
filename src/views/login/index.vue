@@ -13,22 +13,28 @@
       </el-form-item>
       <el-form-item prop="password">
         <svg-icon icon="password" class="svg-container"></svg-icon>
-        <el-input v-model="form.password"></el-input>
+        <el-input v-model="form.password" :type="passwordType"></el-input>
+        <svg-icon
+          :icon="passwordType === 'password' ? 'eye' : 'eye-open'"
+          @click="changeType"
+        ></svg-icon>
       </el-form-item>
-      <el-button type="primary" class="login-button" @click="handleLogin"
-        >登录</el-button
-      >
+      <el-button type="primary" class="login-button" @click="handleLogin">
+        登录
+      </el-button>
     </el-form>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { login } from '@/api/login'
+// import { ElMessage } from 'element-plus'
 // import { User, Lock } from '@element-plus/icons-vue'
 
 const form = ref({
-  username: '',
-  password: ''
+  username: 'admin',
+  password: '123456'
 })
 
 const rules = ref({
@@ -54,16 +60,29 @@ const rules = ref({
   ]
 })
 
+// 登录校验
 const formRef = ref(null)
 const handleLogin = () => {
-  formRef.value.validate((valid) => {
+  formRef.value.validate(async (valid) => {
     if (valid) {
-      alert('submit!')
+      const res = await login(form.value)
+      console.log('res success', res)
+      // ElMessage.success(meta.msg)
     } else {
       console.log('error submit!!')
       return false
     }
   })
+}
+
+// 是否展示密码
+const passwordType = ref('password')
+const changeType = () => {
+  if (passwordType.value === 'password') {
+    passwordType.value = 'text'
+  } else {
+    passwordType.value = 'password'
+  }
 }
 </script>
 
