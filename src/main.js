@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import SvgIcon from '@/icons'
+import '@/router/permission'
 import 'element-plus/dist/index.css'
 import '@/styles/index.scss'
 

@@ -28,10 +28,12 @@
 
 <script setup>
 import { ref } from 'vue'
-import { login } from '@/api/login'
+import { useStore } from 'vuex'
+// import { login } from '@/api/login'
 // import { ElMessage } from 'element-plus'
 // import { User, Lock } from '@element-plus/icons-vue'
 
+const store = useStore()
 const form = ref({
   username: 'admin',
   password: '123456'
@@ -65,9 +67,10 @@ const formRef = ref(null)
 const handleLogin = () => {
   formRef.value.validate(async (valid) => {
     if (valid) {
-      const res = await login(form.value)
-      console.log('res success', res)
+      // const res = await login(form.value)
+      // console.log('res success', res)
       // ElMessage.success(meta.msg)
+      store.dispatch('app/login', form.value)
     } else {
       console.log('error submit!!')
       return false
